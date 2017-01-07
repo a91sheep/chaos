@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.store59.print.dao.mapper.PrintAdGfdMapper">
+	<resultMap id="BaseResultMap"
+		type="com.store59.print.common.model.PrintAdGfdOrder">
+		<id property="orderId" column="order_id" />
+		<result property="dormId" column="dorm_id" />
+		<result property="buyerPhone" column="buyer_phone" />
+		<result property="buyerName" column="buyer_name" />
+		<result property="buyerAddress" column="buyer_address" />
+		<result property="picUrl" column="pic_url" />
+		<result property="picAmount" column="pic_amount" />
+		<result property="picSize" column="pic_size" />
+		<result property="status" column="status" />
+		<result property="isProfit" column="is_profit" />
+		<result property="createTime" column="create_time" />
+		<result property="printTime" column="print_time" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		order_id,
+		dorm_id,buyer_phone,buyer_name,buyer_address,pic_url,pic_amount,pic_size,status,is_profit,create_time,print_time
+	</sql>
+
+	<insert id="insert" parameterType="com.store59.print.common.model.PrintAdGfdOrder"
+		useGeneratedKeys="true" keyProperty="orderId">
+		INSERT INTO p_ad_gfd_order (
+		order_id,
+		dorm_id,
+		buyer_phone,
+		buyer_name,
+		buyer_address,
+		pic_url,
+		pic_amount,
+		pic_size,
+		status,
+		is_profit,
+		create_time,
+		print_time)
+		VALUES(
+		#{orderId},
+		#{dormId},
+		#{buyerPhone},
+		#{buyerName},
+		#{buyerAddress},
+		#{picUrl},
+		#{picAmount},
+		#{picSize},
+		#{status},
+		#{isProfit},
+		#{createTime},
+		#{printTime})
+	</insert>
+
+	<update id="update" parameterType="com.store59.print.common.model.PrintAdGfdOrder">
+		UPDATE p_ad_gfd_order
+		<set>
+			<if test="dormId != null">
+				dorm_id = #{dormId},
+			</if>
+			<if test="buyerPhone != null">
+				buyer_phone = #{buyerPhone},
+			</if>
+			<if test="buyerName != null">
+				buyer_name = #{buyerName},
+			</if>
+			<if test="buyerAddress != null">
+				buyer_address = #{buyerAddress},
+			</if>
+			<if test="picUrl != null">
+				pic_url = #{picUrl},
+			</if>
+			<if test="picAmount != null">
+				pic_amount = #{picAmount},
+			</if>
+			<if test="picSize != null">
+				pic_size = #{picSize},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="isProfit != null">
+				is_profit = #{isProfit},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="printTime != null">
+				print_time = #{printTime}
+			</if>
+		</set>
+		WHERE order_id = #{orderId}
+	</update>
+
+	<select id="findByOrderId" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM p_ad_gfd_order
+		WHERE order_id = #{order_id}
+	</select>
+
+	<sql id="Base_filter">
+		<if test="dormId != null">
+			AND dorm_id = #{dormId}
+		</if>
+		<if test="status != null">
+			AND status = #{status}
+		</if>
+		<if test="isProfit != null">
+			AND is_profit = #{isProfit}
+		</if>
+		<if test="condition != null">
+			AND (order_id like CONCAT('%',#{condition},'%') or
+			buyer_phone like CONCAT('%',#{condition},'%') or 
+			buyer_name like CONCAT('%',#{condition},'%'))
+		</if>
+	</sql>
+
+	<select id="calFreePrintCount" resultType="int">
+		SELECT count(1)
+		FROM
+		p_ad_gfd_order
+		<where>
+			<include refid="Base_filter" />
+		</where>
+	</select>
+
+	<select id="findFreeOrderByFilter" resultMap="BaseResultMap">
+		SELECT 
+		<include refid="Base_Column_List" />
+		FROM
+		p_ad_gfd_order
+		<where>
+			<include refid="Base_filter" />
+		</where>
+		order by create_time desc
+		<if test = "limit != null and offset != null">
+			limit #{limit} offset #{offset}
+		</if>
+	</select>
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store59.print.dao.mapper.Print259UserMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.gala259user.Print259User">
+        <id property="id" column="id"/>
+        <result property="dormId" column="dorm_id"/>
+        <result property="uid" column="uid"/>
+        <result property="nickname" column="nickname"/>
+        <result property="status" column="status"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,dorm_id,uid,nickname,status,update_time
+	</sql>
+	
+    <select id="findByFilter" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM 59_pshop_259user
+        WHERE dorm_id = #{dorm_id} 
+        <if test ="status != null and status >0">
+        	and status = #{status} 
+        </if>
+        
+        <if test="nickname != null and nickname != ''">
+        	and nickname like CONCAT('%',#{nickname},'%')
+        </if>
+        ORDER BY update_time DESC 
+        <if test="offset != null and limit != null">
+            limit #{limit} offset #{offset}
+        </if>
+    </select>
+    
+    <select id="findCountByFilter" resultType="java.lang.Integer">
+        SELECT count(1) 
+        FROM 59_pshop_259user
+        WHERE dorm_id = #{dorm_id} and status = #{status}
+    </select>
+
+</mapper>

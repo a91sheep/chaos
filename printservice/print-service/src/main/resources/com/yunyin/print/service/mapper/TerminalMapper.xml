@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yunyin.print.service.mapper.TerminalMapper">
+    <resultMap id="BaseResultMap" type="com.yunyin.print.common.model.PTerminal">
+        <id property="id" column="id"/>
+        <result property="province_id" column="provinceId"/>
+        <result property="city_id" column="cityId"/>
+        <result property="zone_id" column="zoneId" />
+        <result property="site_id" column="siteId"/>
+        <result property="terminal_name" column="terminalName"/>
+        <result property="terminal_code" column="terminalCode"/>
+        <result property="terminal_machine_code" column="terminalMachineCode"/>
+        <result property="address" column="address"/>
+        <result property="business_type" column="businessType"/>
+        <result property="business_id" column="businessId"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="terminal_status" column="terminalStatus"/>
+        <result property="fault_remark" column="faultRemark"/>
+        <result property="warranty_start" column="warrantyStart"/>
+        <result property="warranty_end" column="warrantyEnd"/>
+        <result property="warranty_remark" column="warrantyRemark"/>
+        <result property="is_active" column="isActive"/>
+        <result property="create_user" column="createUser"/>
+        <result property="create_time" column="createTime"/>
+        <result property="update_user" column="updateUser"/>
+        <result property="update_time" column="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, province_id,city_id,zone_id,site_id ,terminal_name, terminal_code ,terminal_machine_code,address,business_type,
+        business_id,longitude,latitude,terminal_status,fault_remark,warranty_start,warranty_end,warranty_remark,is_active,
+        create_user,create_time,update_user,update_time
+    </sql>
+
+    <select id="findBySiteId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_terminal
+        WHERE site_id = #{siteId}
+    </select>
+</mapper>

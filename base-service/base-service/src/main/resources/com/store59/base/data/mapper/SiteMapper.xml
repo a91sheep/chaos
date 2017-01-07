@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.SiteMapper">
+	<resultMap id="BaseResultMap" type="com.store59.base.common.model.Site">
+		<id column="site_id" property="siteId" jdbcType="INTEGER" />
+		<result column="sid" property="sid" jdbcType="INTEGER" />
+		<result column="dhid" property="dhid" jdbcType="INTEGER" />
+		<result column="zone_id" property="zoneId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="freeship_amount" property="freeshipAmount"
+			jdbcType="DECIMAL" />
+		<result column="shipfee" property="shipfee" jdbcType="DECIMAL" />
+		<result column="site_name" property="siteName" jdbcType="VARCHAR" />
+		<result column="service_time_start" property="serviceTimeStart"
+			jdbcType="INTEGER" />
+		<result column="service_time_end" property="serviceTimeEnd"
+			jdbcType="INTEGER" />
+		<result column="delivery_zone" property="deliveryZone"
+			jdbcType="TINYINT" />
+		<result column="delivery_policy" property="deliveryPolicy"
+			jdbcType="TINYINT" />
+		<result column="delivery_area" property="deliveryArea"
+			jdbcType="VARCHAR" />
+		<result column="status_remark" property="statusRemark"
+			jdbcType="VARCHAR" />
+		<result column="dorm_only" property="dormOnly" jdbcType="TINYINT" />
+		<result column="dorm_delivery_time" property="dormDeliveryTime"
+			jdbcType="INTEGER" />
+		<result column="dorm_delivery_address" property="dormDeliveryAddress"
+			jdbcType="VARCHAR" />
+		<result column="longitude" property="longitude" jdbcType="DOUBLE" />
+		<result column="latitude" property="latitude" jdbcType="DOUBLE" />
+		<result column="coordinate" property="coordinate" jdbcType="VARCHAR" />
+		<result column="keywords" property="keywords" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="guess_total_student" property="guessTotalStudent"
+			jdbcType="INTEGER" />
+		<result column="guess_total_entry" property="guessTotalEntry"
+			jdbcType="INTEGER" />
+		<result column="guess_total_shop" property="guessTotalShop"
+			jdbcType="INTEGER" />
+		<result column="station_id" property="stationId" jdbcType="INTEGER" />
+		<result column="local_dormhouse" property="localDormhouse"
+			jdbcType="TINYINT" />
+		<result column="short_name" property="shortName"
+				jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		site_id, sid, dhid, zone_id, status, freeship_amount,
+		shipfee, site_name,
+		service_time_start,
+		service_time_end, delivery_zone,
+		delivery_policy, delivery_area, status_remark,
+		dorm_only,
+		dorm_delivery_time, dorm_delivery_address, longitude, latitude,
+		coordinate, keywords,
+		address, guess_total_student, guess_total_entry,
+		guess_total_shop,
+		station_id,local_dormhouse,
+		short_name
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from 59_site
+		where site_id = #{siteId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		59_site
+		where site_id = #{siteId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert">
+		insert into 59_site (site_id, sid, dhid,
+		zone_id,
+		status, freeship_amount,
+		shipfee, site_name, service_time_start,
+		service_time_end, delivery_zone, delivery_policy,
+		delivery_area,
+		status_remark, dorm_only,
+		dorm_delivery_time, dorm_delivery_address,
+		longitude, latitude, coordinate,
+		keywords, address,
+		guess_total_student,
+		guess_total_entry, guess_total_shop, station_id,
+		local_dormhouse, short_name)
+		values (#{siteId,jdbcType=INTEGER},
+		#{sid,jdbcType=INTEGER},
+		#{dhid,jdbcType=INTEGER},
+		#{zoneId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT},
+		#{freeshipAmount,jdbcType=DECIMAL},
+		#{shipfee,jdbcType=DECIMAL},
+		#{siteName,jdbcType=VARCHAR},
+		#{serviceTimeStart,jdbcType=INTEGER},
+		#{serviceTimeEnd,jdbcType=INTEGER}, #{deliveryZone,jdbcType=TINYINT},
+		#{deliveryPolicy,jdbcType=TINYINT},
+		#{deliveryArea,jdbcType=VARCHAR},
+		#{statusRemark,jdbcType=VARCHAR}, #{dormOnly,jdbcType=TINYINT},
+		#{dormDeliveryTime,jdbcType=INTEGER},
+		#{dormDeliveryAddress,jdbcType=VARCHAR},
+		#{longitude,jdbcType=DOUBLE},
+		#{latitude,jdbcType=DOUBLE}, #{coordinate,jdbcType=VARCHAR},
+		#{keywords,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{guessTotalStudent,jdbcType=INTEGER},
+		#{guessTotalEntry,jdbcType=INTEGER},
+		#{guessTotalShop,jdbcType=INTEGER}, #{stationId,jdbcType=INTEGER},
+		#{localDormhouse,jdbcType=TINYINT},
+		#{shortName,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective">
+		insert into 59_site
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="siteId != null">
+				site_id,
+			</if>
+			<if test="sid != null">
+				sid,
+			</if>
+			<if test="dhid != null">
+				dhid,
+			</if>
+			<if test="zoneId != null">
+				zone_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="freeshipAmount != null">
+				freeship_amount,
+			</if>
+			<if test="shipfee != null">
+				shipfee,
+			</if>
+			<if test="siteName != null">
+				site_name,
+			</if>
+			<if test="serviceTimeStart != null">
+				service_time_start,
+			</if>
+			<if test="serviceTimeEnd != null">
+				service_time_end,
+			</if>
+			<if test="deliveryZone != null">
+				delivery_zone,
+			</if>
+			<if test="deliveryPolicy != null">
+				delivery_policy,
+			</if>
+			<if test="deliveryArea != null">
+				delivery_area,
+			</if>
+			<if test="statusRemark != null">
+				status_remark,
+			</if>
+			<if test="dormOnly != null">
+				dorm_only,
+			</if>
+			<if test="dormDeliveryTime != null">
+				dorm_delivery_time,
+			</if>
+			<if test="dormDeliveryAddress != null">
+				dorm_delivery_address,
+			</if>
+			<if test="longitude != null">
+				longitude,
+			</if>
+			<if test="latitude != null">
+				latitude,
+			</if>
+			<if test="coordinate != null">
+				coordinate,
+			</if>
+			<if test="keywords != null">
+				keywords,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="guessTotalStudent != null">
+				guess_total_student,
+			</if>
+			<if test="guessTotalEntry != null">
+				guess_total_entry,
+			</if>
+			<if test="guessTotalShop != null">
+				guess_total_shop,
+			</if>
+			<if test="stationId != null">
+				station_id,
+			</if>
+			<if test="localDormhouse != null">
+				local_dormhouse,
+			</if>
+			<if test="shortName != null">
+				short_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="siteId != null">
+				#{siteId,jdbcType=INTEGER},
+			</if>
+			<if test="sid != null">
+				#{sid,jdbcType=INTEGER},
+			</if>
+			<if test="dhid != null">
+				#{dhid,jdbcType=INTEGER},
+			</if>
+			<if test="zoneId != null">
+				#{zoneId,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=TINYINT},
+			</if>
+			<if test="freeshipAmount != null">
+				#{freeshipAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="shipfee != null">
+				#{shipfee,jdbcType=DECIMAL},
+			</if>
+			<if test="siteName != null">
+				#{siteName,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceTimeStart != null">
+				#{serviceTimeStart,jdbcType=INTEGER},
+			</if>
+			<if test="serviceTimeEnd != null">
+				#{serviceTimeEnd,jdbcType=INTEGER},
+			</if>
+			<if test="deliveryZone != null">
+				#{deliveryZone,jdbcType=TINYINT},
+			</if>
+			<if test="deliveryPolicy != null">
+				#{deliveryPolicy,jdbcType=TINYINT},
+			</if>
+			<if test="deliveryArea != null">
+				#{deliveryArea,jdbcType=VARCHAR},
+			</if>
+			<if test="statusRemark != null">
+				#{statusRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="dormOnly != null">
+				#{dormOnly,jdbcType=TINYINT},
+			</if>
+			<if test="dormDeliveryTime != null">
+				#{dormDeliveryTime,jdbcType=INTEGER},
+			</if>
+			<if test="dormDeliveryAddress != null">
+				#{dormDeliveryAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="longitude != null">
+				#{longitude,jdbcType=DOUBLE},
+			</if>
+			<if test="latitude != null">
+				#{latitude,jdbcType=DOUBLE},
+			</if>
+			<if test="coordinate != null">
+				#{coordinate,jdbcType=VARCHAR},
+			</if>
+			<if test="keywords != null">
+				#{keywords,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="guessTotalStudent != null">
+				#{guessTotalStudent,jdbcType=INTEGER},
+			</if>
+			<if test="guessTotalEntry != null">
+				#{guessTotalEntry,jdbcType=INTEGER},
+			</if>
+			<if test="guessTotalShop != null">
+				#{guessTotalShop,jdbcType=INTEGER},
+			</if>
+			<if test="stationId != null">
+				#{stationId,jdbcType=INTEGER},
+			</if>
+			<if test="localDormhouse != null">
+				#{localDormhouse,jdbcType=TINYINT},
+			</if>
+			<if test="shortName != null">
+				#{shortName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective">
+		update 59_site
+		<set>
+			<if test="sid != null">
+				sid = #{sid,jdbcType=INTEGER},
+			</if>
+			<if test="dhid != null">
+				dhid = #{dhid,jdbcType=INTEGER},
+			</if>
+			<if test="zoneId != null">
+				zone_id = #{zoneId,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="freeshipAmount != null">
+				freeship_amount = #{freeshipAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="shipfee != null">
+				shipfee = #{shipfee,jdbcType=DECIMAL},
+			</if>
+			<if test="siteName != null">
+				site_name = #{siteName,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceTimeStart != null">
+				service_time_start =
+				#{serviceTimeStart,jdbcType=INTEGER},
+			</if>
+			<if test="serviceTimeEnd != null">
+				service_time_end = #{serviceTimeEnd,jdbcType=INTEGER},
+			</if>
+			<if test="deliveryZone != null">
+				delivery_zone = #{deliveryZone,jdbcType=TINYINT},
+			</if>
+			<if test="deliveryPolicy != null">
+				delivery_policy = #{deliveryPolicy,jdbcType=TINYINT},
+			</if>
+			<if test="deliveryArea != null">
+				delivery_area = #{deliveryArea,jdbcType=VARCHAR},
+			</if>
+			<if test="statusRemark != null">
+				status_remark = #{statusRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="dormOnly != null">
+				dorm_only = #{dormOnly,jdbcType=TINYINT},
+			</if>
+			<if test="dormDeliveryTime != null">
+				dorm_delivery_time =
+				#{dormDeliveryTime,jdbcType=INTEGER},
+			</if>
+			<if test="dormDeliveryAddress != null">
+				dorm_delivery_address =
+				#{dormDeliveryAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="longitude != null">
+				longitude = #{longitude,jdbcType=DOUBLE},
+			</if>
+			<if test="latitude != null">
+				latitude = #{latitude,jdbcType=DOUBLE},
+			</if>
+			<if test="coordinate != null">
+				coordinate = #{coordinate,jdbcType=VARCHAR},
+			</if>
+			<if test="keywords != null">
+				keywords = #{keywords,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="guessTotalStudent != null">
+				guess_total_student =
+				#{guessTotalStudent,jdbcType=INTEGER},
+			</if>
+			<if test="guessTotalEntry != null">
+				guess_total_entry = #{guessTotalEntry,jdbcType=INTEGER},
+			</if>
+			<if test="guessTotalShop != null">
+				guess_total_shop = #{guessTotalShop,jdbcType=INTEGER},
+			</if>
+			<if test="stationId != null">
+				station_id = #{stationId,jdbcType=INTEGER},
+			</if>
+			<if test="localDormhouse != null">
+				local_dormhouse = #{localDormhouse,jdbcType=TINYINT},
+			</if>
+			<if test="shortName != null">
+				short_name = #{shortName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where site_id = #{siteId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey">
+		update 59_site
+		set sid = #{sid,jdbcType=INTEGER},
+		dhid
+		= #{dhid,jdbcType=INTEGER},
+		zone_id = #{zoneId,jdbcType=INTEGER},
+		status = #{status,jdbcType=TINYINT},
+		freeship_amount =
+		#{freeshipAmount,jdbcType=DECIMAL},
+		shipfee =
+		#{shipfee,jdbcType=DECIMAL},
+		site_name = #{siteName,jdbcType=VARCHAR},
+		service_time_start = #{serviceTimeStart,jdbcType=INTEGER},
+		service_time_end = #{serviceTimeEnd,jdbcType=INTEGER},
+		delivery_zone =
+		#{deliveryZone,jdbcType=TINYINT},
+		delivery_policy =
+		#{deliveryPolicy,jdbcType=TINYINT},
+		delivery_area =
+		#{deliveryArea,jdbcType=VARCHAR},
+		status_remark =
+		#{statusRemark,jdbcType=VARCHAR},
+		dorm_only =
+		#{dormOnly,jdbcType=TINYINT},
+		dorm_delivery_time =
+		#{dormDeliveryTime,jdbcType=INTEGER},
+		dorm_delivery_address =
+		#{dormDeliveryAddress,jdbcType=VARCHAR},
+		longitude =
+		#{longitude,jdbcType=DOUBLE},
+		latitude = #{latitude,jdbcType=DOUBLE},
+		coordinate = #{coordinate,jdbcType=VARCHAR},
+		keywords =
+		#{keywords,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		guess_total_student = #{guessTotalStudent,jdbcType=INTEGER},
+		guess_total_entry = #{guessTotalEntry,jdbcType=INTEGER},
+		guess_total_shop = #{guessTotalShop,jdbcType=INTEGER},
+		station_id =
+		#{stationId,jdbcType=INTEGER},
+		local_dormhouse =
+		#{localDormhouse,jdbcType=TINYINT},
+		short_name =
+		#{shortName,jdbcType=VARCHAR}
+		where site_id =
+		#{siteId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByZoneId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from 59_site
+		where zone_id = #{zoneId}
+	</select>
+	<select id="searchSiteList" resultMap="BaseResultMap" parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from 59_site
+		where site_name like CONCAT('%',#{name},'%')
+		or keywords like
+		CONCAT('%',#{name},'%')
+		limit 20
+	</select>
+	<select id="selectByRegion" resultType="com.store59.base.common.model.SiteView"
+			parameterType="hashmap">
+		<![CDATA[
+		select s.site_id as siteId, s.site_name as siteName, z.zone_id as zoneId, z.name as zoneName,
+			c.city_id as cityId, c.name as cityName, s.status, s.status_remark as statusRemark,
+			s.longitude, s.latitude
+		from 59_site as s
+		inner join 59_zone as z on s.zone_id = z.zone_id
+		inner join 59_city as c on z.city_id = c.city_id
+		where #{longitude1} <= s.longitude and s.longitude <= #{longitude2}
+			and #{latitude1} <= s.latitude and s.latitude <= #{latitude2}
+	]]>
+	</select>
+
+	<select id="findByZoneIds" resultMap="BaseResultMap" parameterType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from 59_site
+		WHERE zone_id IN
+		<foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+</mapper>

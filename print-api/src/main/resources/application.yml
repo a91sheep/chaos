@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: print-main-api
+kylin:
+  cloud:
+    app:
+      version: 1.0
+      description: 打印用户端项目
+    contextPath: /printapi
+
+    

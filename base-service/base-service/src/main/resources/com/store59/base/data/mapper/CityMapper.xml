@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.CityMapper">
+    <resultMap id="BaseResultMap" type="com.store59.base.common.model.City">
+        <id column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="province_id" property="provinceId" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="spell_all" property="spellAll" jdbcType="VARCHAR"/>
+        <result column="spell_short" property="spellShort" jdbcType="VARCHAR"/>
+        <result column="spell_first" property="spellFirst" jdbcType="CHAR"/>
+        <result column="is_hot" property="isHot" jdbcType="BIT"/>
+        <result column="sort" property="sort" jdbcType="SMALLINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		city_id, province_id, name, spell_all, spell_short,
+		spell_first, is_hot, sort
+	</sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from 59_city
+        where city_id = #{cityId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		59_city
+		where city_id = #{cityId,jdbcType=INTEGER}
+	</delete>
+
+    <insert id="insert">
+		insert into 59_city (city_id, province_id, name,
+		spell_all, spell_short, spell_first,
+		is_hot, sort)
+		values
+		(#{cityId,jdbcType=INTEGER}, #{provinceId,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{spellAll,jdbcType=VARCHAR},
+		#{spellShort,jdbcType=VARCHAR}, #{spellFirst,jdbcType=CHAR},
+		#{isHot,jdbcType=BIT}, #{sort,jdbcType=SMALLINT})
+	</insert>
+    <insert id="insertSelective">
+        insert into 59_city
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="spellAll != null">
+                spell_all,
+            </if>
+            <if test="spellShort != null">
+                spell_short,
+            </if>
+            <if test="spellFirst != null">
+                spell_first,
+            </if>
+            <if test="isHot != null">
+                is_hot,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cityId != null">
+                #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="spellAll != null">
+                #{spellAll,jdbcType=VARCHAR},
+            </if>
+            <if test="spellShort != null">
+                #{spellShort,jdbcType=VARCHAR},
+            </if>
+            <if test="spellFirst != null">
+                #{spellFirst,jdbcType=CHAR},
+            </if>
+            <if test="isHot != null">
+                #{isHot,jdbcType=BIT},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective">
+        update 59_city
+        <set>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="spellAll != null">
+                spell_all = #{spellAll,jdbcType=VARCHAR},
+            </if>
+            <if test="spellShort != null">
+                spell_short = #{spellShort,jdbcType=VARCHAR},
+            </if>
+            <if test="spellFirst != null">
+                spell_first = #{spellFirst,jdbcType=CHAR},
+            </if>
+            <if test="isHot != null">
+                is_hot = #{isHot,jdbcType=BIT},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where city_id = #{cityId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey">
+		update 59_city
+		set province_id =
+		#{provinceId,jdbcType=INTEGER},
+		name = #{name,jdbcType=VARCHAR},
+		spell_all = #{spellAll,jdbcType=VARCHAR},
+		spell_short =
+		#{spellShort,jdbcType=VARCHAR},
+		spell_first =
+		#{spellFirst,jdbcType=CHAR},
+		is_hot = #{isHot,jdbcType=BIT},
+		sort =
+		#{sort,jdbcType=SMALLINT}
+		where city_id = #{cityId,jdbcType=INTEGER}
+	</update>
+    <select id="selectByProvinceId" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from 59_city
+        where province_id = #{provinceId,jdbcType=INTEGER}
+    </select>
+
+    <select id="findByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from 59_city
+        where name = #{name}
+    </select>
+
+    <select id="statisticsCityDormentryCountList" resultType="com.store59.base.common.model.CityStatisticsInfo">
+        select t4.city_id as cityId,count(t3.dormentry_id) as count from 59_dormentry t3 ,
+        (select t2.city_id,t1.site_id from 59_zone t2,59_site t1
+        where t1.zone_id=t2.zone_id) as t4
+        where t3.site_id=t4.site_id
+        <if test="status!=null">
+            and t3.status=#{status}
+        </if>
+        group by t4.city_id
+        order by t4.city_id
+    </select>
+</mapper>

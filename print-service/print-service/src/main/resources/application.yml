@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: print-service
+kylin:
+  cloud:
+    app:
+      version: 1.0
+      description: 打印服务项目
+    contextPath: /printservice

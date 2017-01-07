@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>59store</title>
+</head>
+
+<body>
+<script type="text/javascript">
+
+    //调用微信JS api 支付
+    function jsApiCall() {
+        WeixinJSBridge.invoke('getBrandWCPayRequest',  {
+                    "appId": "${data.appId}",
+                    "timeStamp": "${data.timeStamp}",
+                    "nonceStr": "${data.nonceStr}",
+                    "package": "${data.packageStr}",
+                    "signType": "${data.signType}",
+                    "paySign": "${data.paySign}"
+                },
+                function(res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        //alert("pay success");
+                        location.href = "${data.returnUrl}/success";
+                    } else {
+                        //alert("pay fail");
+                        location.href = "${data.returnUrl}/fail";
+                    }
+                }
+        );
+    }
+
+    function callpay() {
+        if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            } else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        } else {
+            jsApiCall();
+        }
+    }
+
+    callpay();
+</script>
+</body>
+</html>

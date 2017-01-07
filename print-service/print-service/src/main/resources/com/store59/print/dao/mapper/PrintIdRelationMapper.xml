@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.print.dao.mapper.PrintIdRelationMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.PrintIdRelation">
+        <result column="old_order_id" property="orderIdOld" jdbcType="INTEGER"/>
+        <result column="new_order_id" property="orderIdNew" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id_old, order_id_new
+    </sql>
+
+    <insert id="insert" parameterType="com.store59.print.common.model.PrintIdRelation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO print_id_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderIdOld != null ">
+                old_order_id,
+            </if>
+            <if test="orderIdNew != null ">
+                new_order_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderIdOld != null ">
+                #{orderIdOld},
+            </if>
+            <if test="orderIdNew != null ">
+                #{orderIdNew},
+            </if>
+        </trim>
+    </insert>
+</mapper>

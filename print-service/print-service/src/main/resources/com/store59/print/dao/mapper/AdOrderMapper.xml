@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.print.dao.mapper.AdOrderMapper">
+	<resultMap id="BaseResultMap" type="com.store59.print.common.model.ad.AdOrder">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="home_page_image" property="homePageImage" />
+		<result column="footer_page_image" property="footerPageImage" />
+		<result column="footer_page_slogan" property="footerPageSlogan" />
+		<result column="home_ad_num" property="homeAdNum" />
+		<result column="footer_ad_num" property="footerAdNum" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="home_show_type" property="homeShowType" />
+		<result column="footer_show_type" property="footerShowType" />
+		<result column="show_area" property="showArea" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="amount" property="amount" />
+		<result column="home_weight" property="homeWeight" />
+		<result column="footer_weight" property="footerWeight" />
+		<result column="nopass_reason" property="nopassReason" />
+		<result column="home_page_unitprice" property="homePageUnitprice" />
+		<result column="footer_page_unitprice" property="footerPageUnitprice" />
+		<result column="uid" property="uid" />
+		<result column="real_name" property="realName" />
+		<result column="phone" property="phone" />
+		<result column="start_date_stamp" property="startDateStamp"/>
+		<result column="end_date_stamp" property="endDateStamp"/>
+		<result column="create_time_stamp" property="createTimeStamp"/>
+		<result column="edit_pdf" property="editPdf"/>
+		<result column="home_used" property="homeUsed"/>
+		<result column="footer_used" property="footerUsed"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		order_id, home_page_image, footer_page_image,
+		footer_page_slogan,
+		home_ad_num, footer_ad_num, date_format(start_date,'%Y-%m-%d %H:%I:%s') as start_date, 
+		date_format(end_date,'%Y-%m-%d %H:%I:%s') as end_date,
+		home_show_type,
+		footer_show_type, show_area, status, date_format(create_time,'%Y-%m-%d %H:%I:%s') as create_time,
+		amount, home_weight,footer_weight,
+		nopass_reason, home_page_unitprice,
+		footer_page_unitprice, uid,UNIX_TIMESTAMP(start_date) as start_date_stamp,
+		UNIX_TIMESTAMP(end_date) as end_date_stamp,UNIX_TIMESTAMP(create_time) as create_time_stamp,edit_pdf
+	</sql>
+
+	<select id="select" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_order
+		where order_id = #{orderId} 
+		<if test="uid!=null">
+			and uid=#{uid}
+		</if>
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into ad_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId != null ">
+				order_id,
+			</if>
+			<if test="homePageImage != null ">
+				home_page_image,
+			</if>
+			<if test="footerPageImage != null ">
+				footer_page_image,
+			</if>
+			<if test="footerPageSlogan != null ">
+				footer_page_slogan,
+			</if>
+			<if test="homeAdNum != null ">
+				home_ad_num,
+			</if>
+			<if test="footerAdNum != null ">
+				footer_ad_num,
+			</if>
+			<if test="startDate != null ">
+				start_date,
+			</if>
+			<if test="endDate != null ">
+				end_date,
+			</if>
+			<if test="homeShowType != null ">
+				home_show_type,
+			</if>
+			<if test="footerShowType != null ">
+				footer_show_type,
+			</if>
+			<if test="showArea != null ">
+				show_area,
+			</if>
+			<if test="status != null ">
+				status,
+			</if>
+			<if test="createTime != null ">
+				create_time,
+			</if>
+			<if test="amount != null ">
+				amount,
+			</if>
+			<if test="nopassReason != null ">
+				nopass_reason,
+			</if>
+			<if test="homePageUnitprice != null ">
+				home_page_unitprice,
+			</if>
+			<if test="footerPageUnitprice != null ">
+				footer_page_unitprice,
+			</if>
+			<if test="uid != null ">
+				uid,
+			</if>
+			<if test="editPdf!=null">
+				edit_pdf,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId != null ">
+				#{orderId},
+			</if>
+			<if test="homePageImage != null ">
+				#{homePageImage},
+			</if>
+			<if test="footerPageImage != null ">
+				#{footerPageImage},
+			</if>
+			<if test="footerPageSlogan != null ">
+				#{footerPageSlogan},
+			</if>
+			<if test="homeAdNum != null ">
+				#{homeAdNum},
+			</if>
+			<if test="footerAdNum != null ">
+				#{footerAdNum},
+			</if>
+			<if test="startDate != null ">
+				#{startDate},
+			</if>
+			<if test="endDate != null ">
+				#{endDate},
+			</if>
+			<if test="homeShowType != null ">
+				#{homeShowType},
+			</if>
+			<if test="footerShowType != null ">
+				#{footerShowType},
+			</if>
+			<if test="showArea != null ">
+				#{showArea},
+			</if>
+			<if test="status != null ">
+				#{status},
+			</if>
+			<if test="createTime != null ">
+				#{createTime},
+			</if>
+			<if test="amount != null ">
+				#{amount},
+			</if>
+			<if test="nopassReason != null ">
+				#{nopassReason},
+			</if>
+			<if test="homePageUnitprice != null ">
+				#{homePageUnitprice},
+			</if>
+			<if test="footerPageUnitprice != null ">
+				#{footerPageUnitprice},
+			</if>
+			<if test="uid != null ">
+				#{uid},
+			</if>
+			<if test="editPdf != null">
+				#{editPdf},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update">
+		update ad_order
+		<set>
+			<if test="homePageImage != null ">
+				home_page_image = #{homePageImage},
+			</if>
+			<if test="footerPageImage != null ">
+				footer_page_image = #{footerPageImage},
+			</if>
+			<if test="footerPageSlogan != null ">
+				footer_page_slogan = #{footerPageSlogan},
+			</if>
+			<if test="homeAdNum != null ">
+				home_ad_num = #{homeAdNum},
+			</if>
+			<if test="footerAdNum != null ">
+				footer_ad_num = #{footerAdNum},
+			</if>
+			<if test="startDate != null ">
+				start_date = #{startDate},
+			</if>
+			<if test="endDate != null ">
+				end_date = #{endDate},
+			</if>
+			<if test="homeShowType != null ">
+				home_show_type = #{homeShowType},
+			</if>
+			<if test="footerShowType != null ">
+				footer_show_type = #{footerShowType},
+			</if>
+			<if test="showArea != null ">
+				show_area = #{showArea},
+			</if>
+			<if test="status != null ">
+				status = #{status},
+			</if>
+			<if test="homeWeight != null ">
+				home_weight = #{homeWeight},
+			</if>
+			<if test="footerWeight != null ">
+				footer_weight = #{footerWeight},
+			</if>
+			<if test="nopassReason != null ">
+				nopass_reason = #{nopassReason},
+			</if>
+			<if test="homePageUnitprice != null ">
+				home_page_unitprice = #{homePageUnitprice},
+			</if>
+			<if test="footerPageUnitprice != null ">
+				footer_page_unitprice = #{footerPageUnitprice},
+			</if>
+			<if test="editPdf != null">
+				edit_pdf=#{editPdf},
+			</if>
+		</set>
+		where order_id = #{orderId}
+		<if test="uid!=null">
+			and uid=#{uid}
+		</if>
+	</update>
+
+	<delete id="delete">
+		delete from ad_order
+		where id = #{id}
+	</delete>
+
+	<select id="findListByFilter" resultMap="BaseResultMap">
+		select a.edit_pdf,
+		a.order_id, a.home_page_image, a.footer_page_image,
+		a.footer_page_slogan,
+		a.home_ad_num, a.footer_ad_num, a.start_date,
+		a.end_date,
+		a.home_show_type,
+		a.footer_show_type, a.show_area, a.status,
+		a.create_time,
+		a.amount, a.home_weight,a.footer_weight,
+		a.nopass_reason,a.home_page_unitprice,
+		a.footer_page_unitprice, a.uid
+		,b.real_name,b.phone,UNIX_TIMESTAMP(a.start_date) as start_date_stamp,
+		UNIX_TIMESTAMP(a.end_date) as end_date_stamp,UNIX_TIMESTAMP(a.create_time) as create_time_stamp
+		from ad_order a left join ad_user b on a.uid=b.uid
+		<where>
+			1=1
+			<if test="uid!=null">
+				and a.uid=#{uid}
+			</if>
+			<if test="idList != null and idList.size() > 0">
+				and a.order_id in
+				<foreach collection="idList" index="index" item="item" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="statusList != null and statusList.size() > 0">
+				and a.status in
+				<foreach collection="statusList" index="index" item="item" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="fuzzy!=null">
+				and (b.phone like concat('%',#{fuzzy},'%') or b.real_name
+				like
+				concat('%',#{fuzzy},'%') or a.order_id like
+				concat('%',#{fuzzy},'%'))
+			</if>
+			<if test="sort !=null and sort==1">
+				and a.home_weight!=null
+			</if>
+			<if test="sort !=null and sort==2">
+				and a.footer_weight!=null
+			</if>
+		</where>
+		<if test="sort == null">
+			order by a.create_time desc
+		</if>
+		<if test="sort !=null and sort==1">
+			order by a.home_weight
+		</if>
+		<if test="sort !=null and sort==2">
+			order by a.footer_weight
+		</if>
+		<if test="limit != null">
+			limit #{limit}
+		</if>
+		<if test="offset != null">
+			offset #{offset}
+		</if>
+	</select>
+	<select id="freeAd" resultMap="BaseResultMap">
+		select a.*,UNIX_TIMESTAMP(a.start_date) as start_date_stamp,
+		UNIX_TIMESTAMP(a.end_date) as end_date_stamp,UNIX_TIMESTAMP(a.create_time) as create_time_stamp from ad_order a left join (
+		select sum(page_num) as page_num,order_id,type from ad_order_relation where
+		type=#{sort} GROUP BY order_id,type)b
+		on a.order_id=b.order_id where 
+		a.status=3 and (a.show_area like concat('%',#{siteId},'%') or a.show_area like concat('%,',#{siteId},'%'))
+		<if test="sort !=null and sort==1">
+		and (a.home_ad_num-case ISNULL(b.page_num) when 1 then 0 else b.page_num end )>0
+		order by a.home_weight desc
+		</if>
+ 		<if test="sort !=null and sort==2">
+		and (a.footer_ad_num-case ISNULL(b.page_num) when 1 then 0 else b.page_num end )>0
+		order by a.footer_weight desc
+		</if>
+		<if test="limit != null">
+			limit #{limit}
+		</if>
+		<if test="offset != null">
+			offset #{offset}
+		</if>
+	</select>
+	<select id="getTotalAmount" resultType="java.lang.Integer">
+		select
+		count(1)
+		from ad_order a left join ad_user b on a.uid=b.uid
+		<where>
+			1=1
+			<if test="uid!=null">
+				and a.uid=#{uid}
+			</if>
+			<if test="idList != null and idList.size() > 0">
+				and a.order_id in
+				<foreach collection="idList" index="index" item="item" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="statusList != null and statusList.size() > 0">
+				and a.status in
+				<foreach collection="statusList" index="index" item="item" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="fuzzy!=null">
+				and (b.phone like concat('%',#{fuzzy},'%') or b.real_name
+				like
+				concat('%',#{fuzzy},'%') or a.order_id like
+				concat('%',#{fuzzy},'%'))
+			</if>
+			<if test="sort !=null and sort==1">
+				and a.home_weight!=null
+			</if>
+			<if test="sort !=null and sort==2">
+				and a.footer_weight!=null
+			</if>
+		</where>
+	</select>
+	<select id="findOrderUsedList" resultMap="BaseResultMap">
+	select a.*,m.home_used,m.footer_used from ad_order a left join (select home_used,footer_used,b.order_id from (
+	select count(1) as home_used,order_id from ad_order_relation where type=1 GROUP BY order_id)b 
+	left join (select count(1) as footer_used,order_id from ad_order_relation where type=2 GROUP BY order_id)c
+	on  b.order_id=c.order_id
+	)m
+	on a.order_id=m.order_id
+	<where>
+		<if test="uid!=null">
+			and a.uid=#{uid}
+		</if>
+			and a.status in (3,6)
+	</where>
+	order by a.status asc ,a.create_time desc 
+		<if test="limit != null">
+			limit #{limit}
+		</if>
+		<if test="offset != null">
+			offset #{offset}
+		</if>
+	</select>
+</mapper>

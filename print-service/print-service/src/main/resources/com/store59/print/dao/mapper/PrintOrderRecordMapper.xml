@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.print.dao.mapper.PrintOrderRecordMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.PrintOrderRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="order_id" property="orderId" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, order_id, status
+    </sql>
+
+    <select id="getUncheckOrderIds" resultType="java.lang.String">
+        SELECT order_id
+        FROM print_order_record
+        WHERE status = 0 
+        ORDER BY order_id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.store59.print.common.model.PrintOrderRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO print_order_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">
+                id,
+            </if>
+            <if test="orderId != null ">
+                order_id,
+            </if>
+            <if test="status != null ">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">
+                #{id},
+            </if>
+            <if test="orderId != null ">
+                #{orderId},
+            </if>
+            <if test="status != null ">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateRecordStatus" parameterType="java.util.List">
+        UPDATE print_order_record
+        <set>
+            status = 1,
+        </set>
+        where order_id IN
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store59.print.dao.mapper.PrintOrderDetailMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.PrintOrderDetail">
+        <id property="orderDetailId" column="order_detail_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="status" column="status"/>
+        <result property="isFirst" column="is_first"/>
+        <result property="sourceUrl" column="source_url"/>
+        <result property="sourceMD5" column="source_md5"/>
+        <result property="url" column="url"/>
+        <result property="pdfMD5" column="pdf_md5"/>
+        <result property="pdfSize" column="pdf_size"/>
+        <result property="fileName" column="file_name"/>
+        <result property="printType" column="print_type"/>
+        <result property="reprintType" column="reprint_type"/>
+        <result property="pageNum" column="page_num"/>
+        <result property="num" column="num"/>
+        <result property="amount" column="amount"/>
+        <result property="checkStatus" column="check_status"/>
+        <result property="isProfit" column="is_profit"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		order_detail_id, order_id,status,is_first, source_url, source_md5, url, pdf_md5, pdf_size,
+		file_name,print_type, reprint_type, page_num, num, amount, check_status, is_profit
+	</sql>
+
+    <insert id="addBatch">
+        INSERT INTO p_order_detail
+        (order_id,status,is_first,source_url, source_md5, url, pdf_md5, pdf_size, file_name, print_type, reprint_type, page_num, num, amount,check_status)
+        VALUES
+        <foreach collection="printOrderDetails" item="item" index="index"
+                 separator=",">
+            (#{orderId},#{item.status},#{item.isFirst}, #{item.sourceUrl}, #{item.sourceMD5}, #{item.url},
+            #{item.pdfMD5}, #{item.pdfSize}, #{item.fileName},
+            #{item.printType}, #{item.reprintType}, #{item.pageNum}, #{item.num},
+            #{item.amount},#{item.checkStatus})
+        </foreach>
+    </insert>
+
+    <select id="findByOrderId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order_detail
+        WHERE order_id = #{orderId}
+    </select>
+
+    <select id="findByOrderIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order_detail
+        WHERE order_id IN
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="updateProfit">
+		UPDATE p_order_detail
+		SET is_profit = #{isProfit}
+		WHERE order_detail_id = #{orderDetailId}
+		AND is_profit != #{isProfit}
+	</update>
+
+    <update id="updateStatus">
+        UPDATE p_order_detail
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="pageNum != null">
+                page_num = #{pageNum},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="pdfMD5 != null">
+                pdf_md5 = #{pdfMD5},
+            </if>
+        </set>
+        WHERE order_detail_id = #{orderDetailId}
+    </update>
+
+</mapper>

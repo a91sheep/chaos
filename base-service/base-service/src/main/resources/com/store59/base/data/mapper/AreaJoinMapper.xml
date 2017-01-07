@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.AreaJoinMapper" >
+  <resultMap id="BaseResultMap" type="com.store59.base.common.model.AreaJoin" >
+    <result column="province_id" property="provinceId" jdbcType="INTEGER" />
+    <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+    <result column="zone_id" property="zoneId" jdbcType="INTEGER" />
+    <result column="zone_name" property="zoneName" jdbcType="VARCHAR" />
+    <result column="site_id" property="siteId" jdbcType="INTEGER" />
+    <result column="site_name" property="siteName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="field">
+    province_id , province_name, city_id, city_name,
+    zone_id, zone_name, site_id, site_name
+  </sql>
+
+  <insert id="insert" parameterType="com.store59.base.common.model.AreaJoin" >
+    insert into 59_areajoin (province_id, province_name, city_id,
+    city_name, zone_id, zone_name,
+    site_id, site_name)
+    values (#{provinceId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER},
+    #{cityName,jdbcType=VARCHAR}, #{zoneId,jdbcType=INTEGER}, #{zoneName,jdbcType=VARCHAR},
+    #{siteId,jdbcType=INTEGER}, #{siteName,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="getBySiteId" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT
+      <include refid="field" />
+    FROM 59_areajoin
+    WHERE site_id = #{siteId}
+  </select>
+
+  <select id="findBySiteIds" resultMap="BaseResultMap">
+    SELECT
+    <include refid="field" />
+    FROM 59_areajoin
+    WHERE site_id IN
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
+</mapper>

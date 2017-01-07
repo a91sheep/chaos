@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.SchoolMapper">
+    <resultMap id="BaseResultMap" type="com.store59.base.common.model.School">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name
+    </sql>
+
+    <select id="getSchool" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from 59_school
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from
+        59_school
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert">
+        insert into 59_school (id, name)
+        values
+        (#{id,jdbcType=INTEGER},
+        #{name,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update">
+        update 59_school
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from 59_school
+        where name like '%' #{name} '%'
+    </select>
+    
+    <select id="getCountByName" resultType="java.lang.Integer">
+        select count(1)
+        from 59_school
+        where name = #{name}
+    </select>
+
+</mapper>

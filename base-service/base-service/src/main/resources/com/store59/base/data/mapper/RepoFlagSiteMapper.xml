@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.RepoFlagSiteMapper">
+  <resultMap id="BaseResultMap" type="com.store59.base.common.model.RepoFlagSite">
+    <result column="site_id" property="siteId" jdbcType="INTEGER" />
+    <result column="flag_id" property="flagId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    site_id, flag_id
+  </sql>
+
+  <select id="findBySiteId" resultMap="BaseResultMap">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM 59_repoflagsite
+    WHERE site_id = #{siteId}
+  </select>
+</mapper>

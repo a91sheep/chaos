@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store59.print.dao.mapper.PrintShopTimeMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.gala259user.PrintShopTime">
+        <id property="id" column="id"/>
+        <result property="dormId" column="dorm_id"/>
+        <result property="day" column="day"/>
+        <result property="openHours" column="open_hours"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,dorm_id,day,open_hours
+	</sql>
+	
+    <select id="findPrintShopTimeByDormId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM 59_pshoptime_day_record
+        WHERE dorm_id = #{dormId} AND day &gt;= #{time} 
+        AND day &lt; UNIX_TIMESTAMP(CONCAT(SUBSTR(date_add(FROM_UNIXTIME(#{time},'%Y-%m-%d'), interval 1 month),1,7),'-01'))
+	    ORDER BY day ASC 
+    </select>
+    
+
+    <select id="findCountPrintShopTimeByDormId" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM 59_pshoptime_day_record
+        WHERE dorm_id = #{dormId} AND day &gt;= #{time} 
+        AND day &lt; UNIX_TIMESTAMP(CONCAT(SUBSTR(date_add(FROM_UNIXTIME(#{time},'%Y-%m-%d'), interval 1 month),1,7),'-01'))
+	    AND open_hours &gt;= 5;
+    </select>
+
+</mapper>

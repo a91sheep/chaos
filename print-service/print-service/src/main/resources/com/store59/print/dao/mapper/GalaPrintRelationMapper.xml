@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store59.print.dao.mapper.GalaPrintRelationMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.gala.GalaPrintRelation">
+        <id property="id" column="id"/>
+        <result property="dormId" column="dorm_id"/>
+        <result property="uid" column="uid"/>
+        <result property="phone" column="phone"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,dormId,uid,phone,createTime
+	</sql>
+	
+	<insert id="insert" parameterType="com.store59.print.common.model.gala.GalaPrintRelation" useGeneratedKeys="true" keyProperty="id">
+     INSERT INTO gala_print_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null ">
+        id,
+      </if>
+      <if test="dormId != null ">
+        dorm_id,
+      </if>
+      <if test="uid != null ">
+        uid,
+      </if>
+      <if test="phone != null ">
+        phone,
+      </if>
+      <if test="createTime != null " >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null ">
+          #{id},
+      </if>
+      <if test="dormId != null ">
+          #{dormId},
+      </if>
+      <if test="uid != null ">
+          #{uid},
+      </if>
+      <if test="phone != null ">
+          #{phone},
+      </if>
+      <if test="createTime != null " >
+          #{createTime},
+      </if>
+     </trim>
+  </insert>
+  
+  <sql id="Base_Filter">
+     <if test="dormId != null">
+         AND dorm_id = #{dormId}
+     </if>
+     <if test="phone != null">
+         AND phone = #{phone}
+     </if>
+  </sql>      
+        
+  <select id = "findGalaAmountByFilter" resultType="java.lang.Integer">
+  	SELECT count(1)
+  	FROM gala_print_relation
+  	<where>
+  		<include refid="Base_Filter"/>
+  	</where>
+  </select>
+
+</mapper>

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: pay-web
+kylin:
+  cloud:
+    app:
+      version: 1.0
+      description: 样例项目
+    contextPath: /pay

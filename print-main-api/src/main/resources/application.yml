@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: print-main-api
+kylin:
+  cloud:
+    app:
+      version: 1.0
+      description: 云印APP,H5,PC业务API
+    contextPath: /printmainapi

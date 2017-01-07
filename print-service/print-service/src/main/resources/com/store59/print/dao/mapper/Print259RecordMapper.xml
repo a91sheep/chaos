@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store59.print.dao.mapper.Print259RecordMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.gala259user.Print259Record">
+        <id property="id" column="id"/>
+        <result property="dormId" column="dorm_id"/>
+        <result property="finish259Time" column="finish259_time"/>
+        <result property="isValid" column="is_valid"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,dorm_id,finish259_time,is_valid
+	</sql>
+	
+    <select id="findDormFinish259Time" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM 59_pshop_259record
+        WHERE dorm_id = #{dormId}  
+    </select>
+    
+
+	<update id="update259RecordValidValue">
+		UPDATE 59_pshop_259record
+		SET is_valid = #{status}
+		WHERE dorm_id = #{dormId}
+	</update>
+
+</mapper>

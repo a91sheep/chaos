@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.store59.print.dao.mapper.PrintOrderMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.PrintOrder">
+        <id property="orderId" column="order_id"/>
+        <result property="status" column="status"/>
+        <result property="docType" column="doc_type"/>
+        <result property="source" column="source" />
+        <result property="deliveryType" column="delivery_type"/>
+        <result property="deliveryTime" column="delivery_time"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="remark" column="remark"/>
+        <result property="adPageNum" column="ad_page_num"/>
+        <result property="adUnitPrice" column="ad_unit_price"/>
+        <result property="couponCode" column="coupon_code"/>
+        <result property="couponDiscount" column="coupon_discount"/>
+        <result property="deliveryAmount" column="delivery_amount"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="createTime" column="create_time"/>
+        <result property="payType" column="pay_type"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="printTime" column="print_time"/>
+        <result property="finishTime" column="finish_time"/>
+        <result property="tradeNo" column="trade_no"/>
+        <result property="dormId" column="dorm_id"/>
+        <result property="uid" column="uid"/>
+        <result property="uname" column="uname"/>
+        <result property="cancelReason" column="cancel_reason"/>
+        <result property="autoConfirmHours" column="auto_confirm_hours"/>
+        <result property="buyerId" column="buyer_id"/>
+        <result property="buyerContact" column="buyer_contact"/>
+        <result property="deviceId" column="device_id"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		order_id, status,doc_type,source, delivery_type,delivery_time, phone, address, remark,ad_page_num,ad_unit_price,
+		coupon_code, coupon_discount, delivery_amount, total_amount,
+		create_time, pay_type, pay_time, print_time, finish_time, trade_no,
+		dorm_id, uid, uname, cancel_reason,buyer_id,buyer_contact,device_id
+	</sql>
+
+    <sql id="Base_Filter">
+        <if test="dormId != null">
+            AND dorm_id = #{dormId}
+        </if>
+        <if test="docType != null">
+            AND doc_type = #{docType}
+        </if>
+        <if test="uid != null">
+            AND uid = #{uid}
+        </if>
+        <if test="phone != null">
+            AND phone = #{phone}
+        </if>
+        <if test="startTime != null">
+            <![CDATA[
+				AND create_time >= #{startTime}
+				]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[
+				AND create_time <= #{endTime}
+				]]>
+        </if>
+        <if test="statusList != null">
+            AND status IN
+            <foreach collection="statusList" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="payTypes != null">
+            AND pay_type IN
+            <foreach collection="payTypes" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="isPay != null">
+            <choose>
+                <when test="isPay">
+                    AND pay_time > 0
+                </when>
+                <when test="!isPay">
+                    AND (pay_time is null or pay_time = 0)
+                </when>
+            </choose>
+        </if>
+        <if test="statusList != null and 1>= statusList.get(0)">
+        <choose>
+            <when test="payType != null">
+                AND pay_type is not null
+            </when>
+            <when test="payType == null">
+                AND pay_type is null
+            </when>
+        </choose>
+        <choose>
+            <when test="payTime != null">
+                AND pay_time is not null
+            </when>
+            <when test="payTime == null">
+                AND pay_time is null
+            </when>
+        </choose>
+        <choose>
+            <when test="tradeNo != null">
+                AND trade_no is not null
+            </when>
+            <when test="tradeNo == null">
+                AND trade_no is null
+            </when>
+        </choose>
+        </if>
+    </sql>
+
+    <select id="findByOrderId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order
+        WHERE order_id = #{orderId}
+    </select>
+
+    <select id="findByFilter" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order
+        <where>
+            <include refid="Base_Filter"/>
+        </where>
+        ORDER BY create_time DESC
+        <if test="offset != null and limit != null">
+            limit #{limit} offset #{offset}
+        </if>
+    </select>
+
+    <select id="findCountByFilter" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM p_order
+        <where>
+            <include refid="Base_Filter"/>
+        </where>
+    </select>
+
+    <select id="findSumAmountByFilter" resultType="java.lang.Double">
+        SELECT sum(total_amount + delivery_amount)
+        FROM p_order
+        <where>
+            <include refid="Base_Filter"/>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.store59.print.common.model.PrintOrder"
+            useGeneratedKeys="true" keyProperty="orderId">
+		INSERT INTO p_order (
+		order_id,
+		status,
+		doc_type,
+		source,
+		delivery_type,
+		delivery_time,
+		phone,
+		address,
+		remark,
+        ad_page_num,
+        ad_unit_price,
+		coupon_code,
+		coupon_discount,
+		delivery_amount,
+		total_amount,
+		create_time,
+		pay_type,
+		pay_time,
+		print_time,
+		finish_time,
+		trade_no,
+		dorm_id,
+		uid,
+		uname,
+		auto_confirm_hours,
+		buyer_id,
+		buyer_contact,
+		device_id)
+		VALUES(
+		#{orderId},
+		#{status},
+		#{docType},
+		#{source},
+		#{deliveryType},
+		#{deliveryTime},
+		#{phone},
+		#{address},
+		#{remark},
+        #{adPageNum},
+        #{adUnitPrice},
+		#{couponCode},
+		#{couponDiscount},
+		#{deliveryAmount},
+		#{totalAmount},
+		#{createTime},
+		#{payType},
+		#{payTime},
+		#{printTime},
+		#{finishTime},
+		#{tradeNo},
+		#{dormId},
+		#{uid},
+		#{uname},
+		#{autoConfirmHours},
+		#{buyerId},
+		#{buyerContact},
+		#{deviceId});
+	</insert>
+
+	<update id="update" parameterType="com.store59.print.common.model.PrintOrder">
+		UPDATE p_order
+		<set>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="docType != null">
+				doc_type = #{docType},
+			</if>
+			<if test="source != null">
+				source = #{source},
+			</if>
+			<if test="payType != null">
+				pay_type = #{payType},
+			</if>
+			<if test="payTime != null">
+				pay_time = #{payTime},
+			</if>
+			<if test="printTime != null">
+				print_time = #{printTime},
+			</if>
+			<if test="finishTime != null">
+				finish_time = #{finishTime},
+			</if>
+			<if test="tradeNo != null">
+				trade_no = #{tradeNo},
+			</if>
+			<if test="cancelReason != null">
+				cancel_reason = #{cancelReason},
+			</if>
+			<if test="buyerId != null">
+				buyer_id = #{buyerId},
+			</if>
+			<if test="buyerContact != null">
+				buyer_contact = #{buyerContact},
+			</if>
+			<if test="deviceId != null">
+				device_id = #{deviceId},
+			</if>
+		</set>
+		WHERE order_id = #{orderId}
+	</update>
+
+</mapper>

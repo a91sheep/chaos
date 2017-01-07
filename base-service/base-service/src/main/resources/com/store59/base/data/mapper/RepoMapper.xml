@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.store59.base.data.mapper.RepoMapper">
+
+	<sql id="filed">
+		rid, status, type, close, cate_id as cateId, price, market_price as marketPrice, code, name,
+		default_image as defaultImage, tip, pinyin, profit_ratio as profitRatio ,is_new as isNew, no_sale as noSale,
+		cate_type as cateType, relation_rids as relationRids
+	</sql>
+
+	<select id="findRepoByRid" resultType="com.store59.base.common.model.Repo">
+		SELECT
+			<include refid="filed" />
+		FROM 59_repo
+		WHERE rid = #{rid}
+	</select>
+
+	<select id="findRepoListAll" resultType="com.store59.base.common.model.Repo">
+		SELECT
+		<include refid="filed" />
+		FROM 59_repo
+	</select>
+
+	<select id="findRepoListByIds" resultType="com.store59.base.common.model.Repo">
+		SELECT
+		<include refid="filed" />
+		FROM 59_repo
+		WHERE rid IN
+		<foreach collection="ridList" item="rid" index="index" open="(" close=")" separator=",">
+			#{rid}
+		</foreach>
+	</select>
+
+	<select id="findByFilter" resultType="com.store59.base.common.model.Repo" parameterType="com.store59.base.common.filter.RepoFilter">
+		SELECT
+		<include refid="filed" />
+		FROM 59_repo
+		<where>
+			1=1
+			<if test="rids != null">
+				AND rid IN
+				<foreach collection="rids" item="item" index="index" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test="noSale != null">
+				AND no_sale = #{noSale}
+			</if>
+			<if test="cateType != null">
+				AND cate_type = #{cateType}
+			</if>
+		</where>
+
+	</select>
+</mapper>

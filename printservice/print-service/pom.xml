@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.store59</groupId>
+        <artifactId>kylin-parent</artifactId>
+        <version>2.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.yunyin</groupId>
+    <artifactId>print-service</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.yunyin</groupId>
+            <artifactId>print-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.store59</groupId>
+            <artifactId>kylin-datasource</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.store59</groupId>
+            <artifactId>kylin-utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.store59</groupId>
+            <artifactId>kylin-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.store59</groupId>
+            <artifactId>kylin-cloud-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.store59</groupId>
+            <artifactId>kylin-log4j2</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>printservice</finalName>
+    </build>
+    <distributionManagement>
+        <repository>
+            <id>Kylin-Snapshots</id>
+            <name>Kylin Snapshots</name>
+            <url>http://nexus.59store.com:8081/nexus/content/repositories/Kylin-Snapshots/</url>
+        </repository>
+    </distributionManagement>
+
+</project>

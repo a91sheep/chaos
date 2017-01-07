@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.print.dao.mapper.BillRecordMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.ad.BillRecord">
+        <id column="id" property="id" />
+        <result column="uid" property="uid" />
+        <result column="amount" property="amount" />
+        <result column="msg" property="msg" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, uid, amount, msg, create_time
+    </sql>
+
+    <select id="select" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ad_consumption_record
+        where id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into ad_consumption_record
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="uid != null ">
+                uid,
+            </if>
+            <if test="amount != null ">
+                amount,
+            </if>
+            <if test="msg != null ">
+                msg,
+            </if>
+            <if test="createTime != null ">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="uid != null ">
+                #{uid},
+            </if>
+            <if test="amount != null ">
+                #{amount},
+            </if>
+            <if test="msg != null ">
+                #{msg},
+            </if>
+            <if test="createTime != null ">
+                #{createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" >
+        update ad_consumption_record
+        <set>
+            <if test="uid != null ">
+                uid = #{uid},
+            </if>
+            <if test="amount != null ">
+                amount = #{amount},
+            </if>
+            <if test="msg != null ">
+                msg = #{msg},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" >
+        delete from ad_consumption_record
+        where id = #{id}
+    </delete>
+
+    <select id="findListByFilter" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ad_consumption_record
+        where uid=#{uid}
+        <if test="limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null">
+            offset #{offset}
+        </if>
+    </select>
+</mapper>

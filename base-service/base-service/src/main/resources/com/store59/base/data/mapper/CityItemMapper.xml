@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.CityItemMapper">
+	<resultMap id="BaseResultMap" type="com.store59.base.common.model.CityItem">
+		<id column="item_id" property="itemId" jdbcType="INTEGER" />
+		<result column="city_id" property="cityId" jdbcType="INTEGER" />
+		<result column="rid" property="rid" jdbcType="INTEGER" />
+		<result column="profit_ratio" property="profitRatio" jdbcType="DOUBLE" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		item_id, city_id, rid, profit_ratio, price
+	</sql>
+
+	<select id="findByCityId" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM 59_cityitem
+		WHERE city_id = #{cityId}
+	</select>
+
+	<select id="findByCityIdAndRid" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM 59_cityitem
+		WHERE city_id=#{cityId} and rid=#{rid}
+	</select>
+
+</mapper>

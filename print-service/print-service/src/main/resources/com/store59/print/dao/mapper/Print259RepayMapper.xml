@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store59.print.dao.mapper.Print259RepayMapper">
+    <resultMap id="BaseResultMap" type="com.store59.print.common.model.gala259user.Print259Repay">
+        <id property="id" column="id"/>
+        <result property="dormId" column="dorm_id"/>
+        <result property="periods" column="periods"/>
+        <result property="openStatus" column="open_status"/>
+        <result property="repayStatus" column="repay_status"/>
+        <result property="checkTime" column="check_time"/>
+        <result property="repayTime" column="repay_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,dorm_id,periods,open_status,repay_status,check_time,repay_time
+	</sql>
+	
+    <select id="findRepayByDormId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM 59_pshop_repay_record
+        WHERE dorm_id = #{dormId} 
+        ORDER BY periods ASC 
+    </select>
+
+    <update id="updateBatchRepayList" >
+	    update 59_pshop_repay_record
+	    <set>
+	        open_status = CASE 
+	        <foreach collection="list" item="item" index="index">
+	          WHEN id = #{item.id} THEN #{item.openStatus}    
+	        </foreach>
+	        END,
+	        
+	        repay_status = CASE 
+	        <foreach collection="list" item="item" index="index">
+	          WHEN id = #{item.id} THEN #{item.repayStatus}    
+	        </foreach>
+	        END,
+	        
+	 	    repay_time = CASE 
+	        <foreach collection="list" item="item" index="index">
+	          WHEN id = #{item.id} THEN #{item.repayTime}    
+	        </foreach>
+	        END
+	    </set>
+	    WHERE id IN
+	    <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+	      #{item.id}
+	    </foreach>		
+    </update>
+</mapper>

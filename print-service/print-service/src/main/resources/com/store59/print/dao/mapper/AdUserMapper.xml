@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.print.dao.mapper.AdUserMapper">
+	<resultMap id="BaseResultMap" type="com.store59.print.common.model.ad.AdUser">
+		<id column="id" property="id" />
+		<result column="uid" property="uid" />
+		<result column="real_name" property="realName" />
+		<result column="phone" property="phone" />
+		<result column="status" property="status" />
+		<result column="amount" property="amount" />
+		<result column="company_name" property="companyName" />
+		<result column="company_type" property="companyType" />
+		<result column="idcard_pros_image" property="idcardprosImage" />
+		<result column="idcard_cons_image" property="idcardconsImage" />
+		<result column="business_license_image" property="businessLicenseImage" />
+		<result column="create_time" property="createTime" />
+		<result column="open_id" property="openId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, uid, real_name, phone, status, amount, company_name,
+		company_type,
+		idcard_pros_image, idcard_cons_image,
+		business_license_image,
+		create_time, open_id
+	</sql>
+
+	<select id="select" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_user
+		where uid = #{uid}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into ad_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null ">
+				uid,
+			</if>
+			<if test="realName != null ">
+				real_name,
+			</if>
+			<if test="phone != null ">
+				phone,
+			</if>
+			<if test="status != null ">
+				status,
+			</if>
+			<if test="amount != null ">
+				amount,
+			</if>
+			<if test="companyName != null ">
+				company_name,
+			</if>
+			<if test="companyType != null ">
+				company_type,
+			</if>
+			<if test="idcardprosImage != null ">
+				idcard_pros_image,
+			</if>
+			<if test="idcardconsImage != null ">
+				idcard_cons_image,
+			</if>
+			<if test="businessLicenseImage != null ">
+				business_license_image,
+			</if>
+			<if test="createTime != null ">
+				create_time,
+			</if>
+			<if test="openId != null ">
+				open_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null ">
+				#{uid},
+			</if>
+			<if test="realName != null ">
+				#{realName},
+			</if>
+			<if test="phone != null ">
+				#{phone},
+			</if>
+			<if test="status != null ">
+				#{status},
+			</if>
+			<if test="amount != null ">
+				#{amount},
+			</if>
+			<if test="companyName != null ">
+				#{companyName},
+			</if>
+			<if test="companyType != null ">
+				#{companyType},
+			</if>
+			<if test="idcardprosImage != null ">
+				#{idcardprosImage},
+			</if>
+			<if test="idcardconsImage != null ">
+				#{idcardconsImage},
+			</if>
+			<if test="businessLicenseImage != null ">
+				#{businessLicenseImage},
+			</if>
+			<if test="createTime != null ">
+				#{createTime},
+			</if>
+			<if test="openId != null ">
+				#{openId},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update">
+		update ad_user
+		<set>
+			<!-- <if test="uid != null ">
+				uid = #{uid},
+			</if> -->
+			<if test="realName != null ">
+				real_name = #{realName},
+			</if>
+			<if test="phone != null ">
+				phone = #{phone},
+			</if>
+			<if test="status != null ">
+				status = #{status},
+			</if>
+			<if test="amount != null ">
+				amount = #{amount},
+			</if>
+			<if test="companyName != null ">
+				company_name = #{companyName},
+			</if>
+			<if test="companyType != null ">
+				company_type = #{companyType},
+			</if>
+			<if test="idcardprosImage != null ">
+				idcard_pros_image = #{idcardprosImage},
+			</if>
+			<if test="idcardconsImage != null ">
+				idcard_cons_image = #{idcardconsImage},
+			</if>
+			<if test="businessLicenseImage != null ">
+				business_license_image = #{businessLicenseImage},
+			</if>
+			<if test="createTime != null ">
+				create_time = #{createTime},
+			</if>
+			<if test="openId != null ">
+				open_id = #{openId},
+			</if>
+		</set>
+		where uid = #{uid}
+	</update>
+
+	<delete id="delete">
+		delete from ad_user
+		where id = #{id}
+	</delete>
+
+	<select id="findListByFilter" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_user
+		<where>
+			<if test="uid!=null">
+				and uid=#{uid}
+			</if>
+			<if test="fuzzy!=null">
+				and (real_name like concat('%',#{fuzzy},'%') or phone
+				like
+				concat('%',#{fuzzy},'%') )
+			</if>
+			<if test="status !=null">
+				and status =#{status}
+			</if>
+		</where>
+		<if test="limit != null">
+			limit #{limit}
+		</if>
+		<if test="offset != null">
+			offset #{offset}
+		</if>
+	</select>
+	<select id="getTotalAmount" resultType="java.lang.Integer">
+	select
+		count(1)
+		from ad_user
+		<where>
+			<if test="uid!=null">
+				and uid=#{uid}
+			</if>
+			<if test="fuzzy!=null">
+				and (real_name like concat('%',#{fuzzy},'%') or phone
+				like
+				concat('%',#{fuzzy},'%') )
+			</if>
+			<if test="status !=null">
+				and status =#{status}
+			</if>
+		</where>
+	</select>
+</mapper>

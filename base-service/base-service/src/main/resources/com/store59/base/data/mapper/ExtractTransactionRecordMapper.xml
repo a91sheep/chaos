@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.ExtractTransactionRecordMapper" >
+  <resultMap id="Base_Result_Map" type="com.store59.base.common.model.ExtractTransactionRecord" >
+    <id column="id" property="id" />
+    <result column="biz_type" property="bizType" />
+    <result column="uid" property="uid" />
+    <result column="trade_no" property="tradeNo" />
+    <result column="bank_card" property="bankCard" />
+    <result column="bank_code" property="bankCode" />
+    <result column="bank_name" property="bankName" />
+    <result column="bank_city" property="bankCity" />
+    <result column="bank_site" property="bankSite" />
+    <result column="bank_user_name" property="bankUserName" />
+    <result column="extract_money" property="extractMoney" />
+    <result column="status" property="status" />
+    <result column="remark" property="remark" />
+    <result column="add_time" property="addTime" />
+    <result column="handler_id" property="handlerId" />
+    <result column="handle_time" property="handleTime" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, biz_type, uid, trade_no, bank_card, bank_code, bank_name, bank_city, bank_site, bank_user_name,
+    extract_money, status, remark, add_time, handler_id, handle_time
+  </sql>
+
+  <insert id="insert" parameterType="com.store59.base.common.model.ExtractTransactionRecord" >
+    insert into 59_extract_transaction_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bizType != null">
+        biz_type,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="tradeNo != null">
+        trade_no,
+      </if>
+      <if test="bankCard != null">
+        bank_card,
+      </if>
+      <if test="bankCode != null">
+        bank_code,
+      </if>
+      <if test="bankName != null">
+        bank_name,
+      </if>
+      <if test="bankCity != null">
+        bank_city,
+      </if>
+      <if test="bankSite != null">
+        bank_site,
+      </if>
+      <if test="bankUserName != null">
+        bank_user_name,
+      </if>
+      <if test="extractMoney != null">
+        extract_money,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      add_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="bizType != null">
+        #{bizType},
+      </if>
+      <if test="uid != null">
+        #{uid},
+      </if>
+      <if test="tradeNo != null">
+        #{tradeNo},
+      </if>
+      <if test="bankCard != null">
+        #{bankCard},
+      </if>
+      <if test="bankCode != null">
+        #{bankCode},
+      </if>
+      <if test="bankName != null">
+        #{bankName},
+      </if>
+      <if test="bankCity != null">
+        #{bankCity},
+      </if>
+      <if test="bankSite != null">
+        #{bankSite},
+      </if>
+      <if test="bankUserName != null">
+        #{bankUserName},
+      </if>
+      <if test="extractMoney != null">
+        #{extractMoney},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      unix_timestamp(now()),
+    </trim>
+  </insert>
+
+  <update id="update" parameterType="com.store59.base.common.model.ExtractTransactionRecord" >
+    update 59_extract_transaction_record
+    <set>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="handlerId != null" >
+        handler_id = #{handlerId},
+      </if>
+      <if test="handleTime != null" >
+        handle_time = #{handleTime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <select id="findByFilter" resultMap="Base_Result_Map" parameterType="com.store59.base.common.filter.ExtractTransactionFilter">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM 59_extract_transaction_record
+    <where>
+		<if test="tradeNoList != null and tradeNoList.size() > 0">
+			AND trade_no IN
+			<foreach collection="tradeNoList" index="index" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+      <if test="bizType != null">
+        AND biz_type = #{bizType}
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+      <if test="tradeNo != null">
+        AND trade_no = #{tradeNo}
+      </if>
+      <if test="date != null">
+        AND add_time >= #{date}
+      </if>
+    </where>
+    ORDER BY add_time ASC
+  </select>
+</mapper>

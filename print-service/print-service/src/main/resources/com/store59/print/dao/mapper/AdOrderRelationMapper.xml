@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.print.dao.mapper.AdOrderRelationMapper">
+	<resultMap id="BaseResultMap"
+		type="com.store59.print.common.model.ad.AdOrderRelation">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="center_order_id" property="centerOrderId" />
+		<result column="uid" property="uid" />
+		<result column="c_uid" property="cUid" />
+		<result column="site_id" property="siteId" />
+		<result column="site_name" property="siteName" />
+		<result column="create_time" property="createTime" />
+		<result column="page_num" property="pageNum" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, order_id, center_order_id, uid, c_uid, site_id,
+		site_name,page_num,
+		create_time
+	</sql>
+
+	<select id="select" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_order_relation
+		where id = #{id}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into ad_order_relation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId != null ">
+				order_id,
+			</if>
+			<if test="centerOrderId != null ">
+				center_order_id,
+			</if>
+			<if test="uid != null ">
+				uid,
+			</if>
+			<if test="cUid != null ">
+				c_uid,
+			</if>
+			<if test="siteId != null ">
+				site_id,
+			</if>
+			<if test="siteName != null ">
+				site_name,
+			</if>
+			<if test="createTime != null ">
+				create_time,
+			</if>
+			<if test="pageNum != null ">
+				page_num,
+			</if>
+			<if test="type != null ">
+				type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId != null ">
+				#{orderId},
+			</if>
+			<if test="centerOrderId != null ">
+				#{centerOrderId},
+			</if>
+			<if test="uid != null ">
+				#{uid},
+			</if>
+			<if test="cUid != null ">
+				#{cUid},
+			</if>
+			<if test="siteId != null ">
+				#{siteId},
+			</if>
+			<if test="siteName != null ">
+				#{siteName},
+			</if>
+			<if test="createTime != null ">
+				#{createTime},
+			</if>
+			<if test="pageNum != null ">
+				#{pageNum},
+			</if>
+			<if test="type != null ">
+				#{type},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update">
+		update ad_order_relation
+		<set>
+			<if test="orderId != null ">
+				order_id = #{orderId},
+			</if>
+			<if test="centerOrderId != null ">
+				center_order_id = #{centerOrderId},
+			</if>
+			<if test="uid != null ">
+				uid = #{uid},
+			</if>
+			<if test="cUid != null ">
+				c_uid = #{cUid},
+			</if>
+			<if test="siteId != null ">
+				site_id = #{siteId},
+			</if>
+			<if test="siteName != null ">
+				site_name = #{siteName},
+			</if>
+			<if test="createTime != null ">
+				create_time = #{createTime},
+			</if>
+			<if test="pageNum != null ">
+				page_num=#{pageNum},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete">
+		delete from ad_order_relation
+		where id = #{id}
+	</delete>
+
+	<select id="findListByFilter" resultMap="BaseResultMap">
+		select
+		a.id, a.order_id, a.center_order_id, a.uid, a.c_uid, a.site_id,
+		a.site_name,a.page_num,
+		a.create_time
+		from ad_order_relation a , ad_order b  
+		<where>
+		<if test="orderId!=null">
+		and a.order_id=#{orderId} 
+		</if>
+		<if test="uid!=null">
+		and a.uid=#{uid}
+		</if>
+		<if test="status!=null">
+		and b.status =#{status}
+		</if>
+		<if test="startTime!=null">
+		and a.create_time>=from_unixtime(#{startTime})
+		</if>
+		<if test="endTime!=null">
+		<![CDATA[
+		and a.create_time<=from_unixtime(#{endTime})
+		]]>
+		</if>
+		</where>
+		<if test="limit != null">
+			limit #{limit}
+		</if>
+		<if test="offset != null">
+			offset #{offset}
+		</if>
+	</select>
+	<select id="count" resultType="java.lang.Integer">
+		select case ISNULL(sum(page_num)) when 1 then 0 else sum(page_num) end from ad_order_relation where
+		order_id=#{orderId} and uid=#{uid} and type=#{type}
+	</select>
+	<select id="countByPerson" resultType="java.lang.Integer">
+		select count(1) from (select * from ad_order_relation where
+		order_id=#{orderId} and uid=#{uid} and type=#{type} group by c_uid)a;
+	</select>
+	<select id="lineChar" resultType="com.store59.print.common.model.ad.LineChar">
+		select sum(page_num) as times ,
+		DATE(create_time) as datetime from ad_order_relation 
+		<where>
+		<if test="orderId!=null">
+			and order_id=#{orderId} 
+		</if>
+		<if test="uid!=null">
+			and uid=#{uid}
+		</if>
+		<if test="type!=null">
+			and type=#{type}
+		</if>
+		<if test="startTime!=null">
+		and create_time>=from_unixtime(#{startTime})
+		</if>
+		<if test="endTime!=null">
+		<![CDATA[
+		and create_time<=from_unixtime(#{endTime})
+		]]>
+		</if>
+		</where>
+		 group by
+		 DATE(create_time);
+	</select>
+	<update id="homepageWeight">
+		UPDATE ad_order m,(
+		select (home_ad_num-num)/dif as weight, order_id from(
+		select *,case ISNULL(page_num) when 1 then 0 else page_num end as num from (
+		(SELECT case TIMESTAMPDIFF(DAY,now(),end_date) when 0 then 1 else
+		TIMESTAMPDIFF(DAY,NOW(),end_date) end as dif,order_id ,home_ad_num
+		from ad_order)a left join
+		(select sum(page_num) as page_num,order_id as id from ad_order_relation
+		where type=1 group by order_id)b on a.order_id=b.id
+		))k
+		)n set m.home_weight=n.weight where m.order_id=n.order_id;
+	</update>
+	<update id="footerWeight">
+		UPDATE ad_order m,(
+		select (footer_ad_num-num)/dif as weight, order_id from(
+		select *,case ISNULL(page_num) when 1 then 0 else page_num end as num from (
+		(SELECT case TIMESTAMPDIFF(DAY,now(),end_date) when 0 then 1 else
+		TIMESTAMPDIFF(DAY,NOW(),end_date) end as dif,order_id ,footer_ad_num
+		from ad_order)a left join
+		(select sum(page_num) as page_num,order_id as id from ad_order_relation
+		where type=2 group by order_id)b on a.order_id=b.id
+		))k
+		)n set m.footer_weight=n.weight where m.order_id=n.order_id;
+	</update>
+	<select id="getTotalAmount" resultType="java.lang.Integer">
+	select
+		count(1)
+		from ad_order_relation a , ad_order b  
+		<where>
+		<if test="orderId!=null">
+		and a.order_id=#{orderId} 
+		</if>
+		<if test="uid!=null">
+		and a.uid=#{uid}
+		</if>
+		<if test="status!=null">
+		and b.status =#{status}
+		</if>
+		<if test="startTime!=null">
+		and from_unixtime(a.create_time)>=from_unixtime(#{startTime})
+		</if>
+		<if test="endTime!=null">
+		<![CDATA[
+		and from_unixtime(a.create_time)<=from_unixtime(#{endTime})
+		]]>
+		</if>
+		</where>
+	</select>
+</mapper>

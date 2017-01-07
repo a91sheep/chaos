@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.BanWordMapper">
+    <resultMap id="BaseResultMap" type="com.store59.base.common.model.BanWord">
+        <id column="bid" property="bid" jdbcType="INTEGER" />
+        <result column="replacefrom" property="replacefrom" jdbcType="VARCHAR" />
+        <result column="replaceto" property="replaceto" jdbcType="VARCHAR" />
+        <result column="deny" property="deny" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        bid, replacefrom, replaceto, deny
+    </sql>
+
+    <select id="select" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from 59_banword
+        where bid = #{bid}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="bid">
+        insert into 59_banword
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="bid != null ">
+                bid,
+            </if>
+            <if test="replacefrom != null ">
+                replacefrom,
+            </if>
+            <if test="replaceto != null ">
+                replaceto,
+            </if>
+            <if test="deny != null ">
+                deny,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="bid != null ">
+                #{bid},
+            </if>
+            <if test="replacefrom != null ">
+                #{replacefrom},
+            </if>
+            <if test="replaceto != null ">
+                #{replaceto},
+            </if>
+            <if test="deny != null ">
+                #{deny},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" >
+        update 59_banword
+        <set>
+            <if test="replacefrom != null ">
+                replacefrom = #{replacefrom},
+            </if>
+            <if test="replaceto != null ">
+                replaceto = #{replaceto},
+            </if>
+            <if test="deny != null ">
+                deny = #{deny},
+            </if>
+        </set>
+        where bid = #{bid}
+    </update>
+
+    <delete id="delete" >
+        delete from 59_banword
+        where bid = #{bid}
+    </delete>
+
+    <select id="findListByFilter" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from 59_banword
+        <where>
+            <if test="deny != null ">
+                and deny = #{deny}
+            </if>
+            <if test="bidList != null and bidList.size() > 0">
+                and bid in
+                <foreach collection="bidList" index="index" item="item" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        <if test="limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null">
+            offset #{offset}
+        </if>
+    </select>
+</mapper>

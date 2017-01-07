@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.store59.base.data.mapper.RepoFlagMapper">
+  <resultMap id="BaseResultMap" type="com.store59.base.common.model.RepoFlag">
+     <id column="flag_id" property="flagId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="rid" property="rid" jdbcType="INTEGER" />
+    <result column="flag_name" property="flagName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="INTEGER" />
+    <result column="end_time" property="endTime" jdbcType="INTEGER" />
+    <result column="relation_type" property="relationType" jdbcType="TINYINT" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    flag_id, status, type, rid, flag_name, 
+    add_time, start_time, end_time,relation_type
+  </sql>
+
+  <select id="findByFlagIds" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM 59_repoflag
+    <where>
+      AND 1=1
+      <if test="flagIds != null and flagIds.size() > 0">
+        AND flag_id IN 
+        <foreach collection="flagIds" index="index" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+    </where>
+    ORDER BY relation_type ASC
+  </select>
+
+</mapper>

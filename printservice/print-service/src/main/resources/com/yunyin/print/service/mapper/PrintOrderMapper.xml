@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yunyin.print.service.mapper.PrintOrderMapper">
+    <resultMap id="BaseResultMap" type="com.yunyin.print.common.model.PrintOrder">
+        <id property="orderId" column="order_id"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="refundStatus" column="refund_status"/>
+        <result property="orderSource" column="order_source"/>
+        <result property="uid" column="uid"/>
+        <result property="uname" column="uname"/>
+        <result property="payAmount" column="pay_amount"/>
+        <result property="discountAmount" column="discount_amount"/>
+        <result property="createTime" column="create_time"/>
+        <result property="printTime" column="print_time"/>
+        <result property="finishTime" column="finish_time"/>
+        <result property="cancelTime" column="cancel_time"/>
+        <result property="cancelReason" column="cancel_reason"/>
+        <result property="payType" column="pay_type"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="tradeNo" column="trade_no"/>
+        <result property="buyerId" column="buyer_id"/>
+        <result property="buyerContact" column="buyer_contact"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="couponCode" column="coupon_code"/>
+        <result property="couponDiscount" column="coupon_discount"/>
+        <result property="adPageNum" column="ad_page_num"/>
+        <result property="adPageUnitprice" column="ad_page_unitprice"/>
+        <result property="printCode" column="print_code"/>
+        <result property="siteId" column="site_id"/>
+        <result property="terminalId" column="terminal_id"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id, order_status,pay_status,refund_status,order_source,uid,uname,pay_amount,discount_amount,create_time,
+        print_time,finish_time,cancel_time,cancel_reason,pay_type,pay_time,trade_no,buyer_id,buyer_contact,device_id,
+        coupon_code,coupon_discount,ad_page_num,ad_page_unitprice,print_code,site_id,terminal_id
+    </sql>
+
+    <sql id="Base_Filter">
+        <if test="site_id != null">
+            AND site_id = #{siteId}
+        </if>
+        <if test="uid != null">
+            AND uid = #{uid}
+        </if>
+        <if test="startTime != null">
+            <![CDATA[
+				AND create_time >= #{startTime}
+				]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[
+				AND create_time <= #{endTime}
+				]]>
+        </if>
+        <if test="statusList != null">
+            AND order_status IN
+            <foreach collection="statusList" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="payTypes != null">
+            AND pay_type IN
+            <foreach collection="payTypes" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="findByOrderId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order
+        WHERE order_id = #{orderId}
+    </select>
+
+    <select id="findByPrintCode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order
+        WHERE print_code = #{printCode}
+    </select>
+
+    <select id="findByFilter" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order
+        <where>
+            <include refid="Base_Filter"/>
+        </where>
+        ORDER BY create_time DESC
+        <if test="offset != null and limit != null">
+            limit #{limit} offset #{offset}
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="com.yunyin.print.common.model.PrintOrder"
+            useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO p_order (
+        order_id, order_status,pay_status,refund_status,order_source,uid,uname,pay_amount,discount_amount,create_time,
+        pay_type,pay_time,trade_no,buyer_id,buyer_contact,device_id,
+        coupon_code,coupon_discount,ad_page_num,ad_page_unitprice,print_code,site_id,terminal_id)
+        VALUES(
+        #{orderId},
+        #{orderStatus},
+        #{payStatus},
+        #{refundStatus},
+        #{orderSource},
+        #{uid},
+        #{uname},
+        #{payAmount},
+        #{discountAmount},
+        #{createTime},
+        #{payType},
+        #{payTime},
+        #{tradeNo},
+        #{buyerId},
+        #{buyerContact},
+        #{deviceId},
+        #{couponCode},
+        #{couponDiscount},
+        #{adPageNum},
+        #{adPageUnitprice},
+        #{print_code},
+        #{siteId},
+        #{terminalId}
+        );
+    </insert>
+
+    <update id="update" parameterType="com.yunyin.print.common.model.PrintOrder">
+        UPDATE p_order
+        <set>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus},
+            </if>
+            <if test="orderSource != null">
+                order_source = #{orderSource},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime},
+            </if>
+            <if test="printTime != null">
+                print_time = #{printTime},
+            </if>
+            <if test="finishTime != null">
+                finish_time = #{finishTime},
+            </if>
+            <if test="tradeNo != null">
+                trade_no = #{tradeNo},
+            </if>
+            <if test="cancelTime != null">
+                cancel_time = #{cancelTime},
+            </if>
+            <if test="cancelReason != null">
+                cancel_reason = #{cancelReason},
+            </if>
+            <if test="buyerId != null">
+                buyer_id = #{buyerId},
+            </if>
+            <if test="buyerContact != null">
+                buyer_contact = #{buyerContact},
+            </if>
+            <if test="deviceId != null">
+                device_id = #{deviceId},
+            </if>
+        </set>
+        WHERE order_id = #{orderId}
+    </update>
+
+</mapper>

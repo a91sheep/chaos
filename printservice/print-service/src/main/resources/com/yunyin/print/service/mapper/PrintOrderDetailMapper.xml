@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyin.print.service.mapper.PrintOrderDetailMapper">
+    <resultMap id="BaseResultMap" type="com.yunyin.print.common.model.PrintOrderDetail">
+        <id property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="printStatus" column="print_status"/>
+        <result property="isFirst" column="is_first"/>
+        <result property="sourceUrl" column="source_url"/>
+        <result property="sourceMD5" column="source_md5"/>
+        <result property="pdfUrl" column="pdf_url"/>
+        <result property="pdfMD5" column="pdf_md5"/>
+        <result property="pdfNum" column="pdf_num"/>
+        <result property="fileName" column="file_name"/>
+        <result property="docType" column="doc_type"/>
+        <result property="printType" column="print_type"/>
+        <result property="minimoType" column="minimo_type"/>
+        <result property="paperType" column="paper_type"/>
+        <result property="printSide" column="print_side"/>
+        <result property="printNum" column="print_num"/>
+        <result property="amount" column="amount"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, order_id,print_status,is_first, source_url, source_md5, pdf_url, pdf_md5,pdf_num,
+        file_name,doc_type,print_type, minimo_type,paper_type,print_side, print_num, amount
+    </sql>
+
+    <insert id="addBatch">
+        INSERT INTO p_order_detail
+        (order_id,print_status,is_first, source_url, source_md5, pdf_url, pdf_md5,pdf_num,
+        file_name,doc_type,print_type, minimo_type,paper_type,print_side, print_num, amount)
+        VALUES
+        <foreach collection="printOrderDetails" item="item" index="index"
+                 separator=",">
+            (#{orderId},#{item.printStatus},#{item.isFirst}, #{item.sourceUrl}, #{item.sourceMD5}, #{item.pdfUrl},
+            #{item.pdfMD5},#{item.pdfNum}, #{item.fileName},#{item.docType},
+            #{item.printType}, #{item.minimoType},#{item.paperType}, #{item.printSide},#{item.printNum},
+            #{item.amount})
+        </foreach>
+    </insert>
+
+    <select id="findByOrderId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order_detail
+        WHERE order_id = #{orderId}
+    </select>
+
+    <select id="findByOrderIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM p_order_detail
+        WHERE order_id IN
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="updateStatus">
+        UPDATE p_order_detail
+        <set>
+            <if test="printStatus != null">
+                print_status = #{printStatus},
+            </if>
+            <if test="pdfNum != null">
+                pdf_num = #{pdfNum},
+            </if>
+            <if test="pdfUrl != null">
+                pdf_url = #{pdfUrl},
+            </if>
+            <if test="pdfMD5 != null">
+                pdf_md5 = #{pdfMD5},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>
